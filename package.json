@@ -1,0 +1,21 @@
+{
+  "name": "secure-server-stuff",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "server terminal webpage",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "path": "^0.12.7"
+  },
+  "dependencies": {
+    "node-bash": "^5.0.1"
+  }
+}
