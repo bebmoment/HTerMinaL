@@ -3,15 +3,13 @@ server
 TODO: write helper functions for rendering stuff because the posts are getting unwieldly
 */
 
-
 // SET TO TRUE ONLY IF YOU WANT BOZOS RUNNING RANDOM SHELL COMMANDS ON YOUR PC
 let DANGEROUS_MODE = false;
-let admin = false; // remove later
 // imports and initializations
 import express from 'express';
 import { exec } from 'child_process';
-import bodyParser from 'body-parser';
-import { Bash } from 'node-bash';
+import bodyParser from 'body-parser'; 
+import { Bash } from 'node-bash'; // might replace with exec
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -32,14 +30,7 @@ app.get('/', (req, res) => {
 app.get('/hack', (req, res) => {
 	res.render('hack.ejs', {result: ""})
 });
-// unused and obsolete
-app.get('/admin', (req, res) => {
-	if(!admin) {
-		res.sendStatus(401);
-	} else {
-		res.render('admin.ejs');
-	}
-});
+
 // start message
 app.listen(port, () => {
 	console.log(`app listening on port ${port}`);
@@ -54,11 +45,7 @@ app.post('/hack', (req, res) => {
 		}
 	})
 });
-// also unused and obsolete
-app.post('/admin', (req, res) => {
-	DANGEROUS_MODE = !req.body.dangerous.checked;
-	res.redirect('/')
-});
+
 // handling command
 app.post('/', (req, res) => {
 	if (!DANGEROUS_MODE) {
@@ -79,6 +66,14 @@ app.put('/', (req, res) => {
 	DANGEROUS_MODE = false;
 	res.redirect('/');
 })
+
+// might replace with an exec call soon
 function bashEcho(what) {
 	return Bash.$`echo ${what}`;
+}
+// starting wrapper functions
+// might have to curry heehoo
+// DOESN'T FUCKING WORK RN 
+function renderHome(res, req, out, danger) {
+	res.render('index.ejs', {output: out, DANGEROUS_MODE: danger})
 }
