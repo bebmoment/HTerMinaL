@@ -1,6 +1,6 @@
 // SET TO TRUE ONLY IF YOU WANT BOZOS RUNNING RANDOM SHELL COMMANDS ON YOUR PC
-const DANGEROUS_MODE = false;
-
+let DANGEROUS_MODE = false;
+let admin = false; // remove later
 // imports and initializations
 import express from 'express';
 import { exec } from 'child_process';
@@ -26,20 +26,32 @@ app.get('/', (req, res) => {
 app.get('/hack', (req, res) => {
 	res.render('hack.ejs', {result: ""})
 });
+// unused and obsolete
+app.get('/admin', (req, res) => {
+	if(!admin) {
+		res.sendStatus(401);
+	} else {
+		res.render('admin.ejs');
+	}
+});
 // start message
 app.listen(port, () => {
 	console.log(`app listening on port ${port}`);
 });
 app.post('/hack', (req, res) => {
-	const passedword = req.body.login;
 	exec(`./hack ${req.body.login}`, (err, stdout, stderr) => {
-		// exec(`./hack` , (err, stdout, stderr) => {
 		if(err) {
 			res.render('hack.ejs', {result: stderr})
 		} else {
-			res.render('hack.ejs', {result: stdout})
+			DANGEROUS_MODE = true;
+			res.redirect('/')
 		}
 	})
+});
+// also unused and obsolete
+app.post('/admin', (req, res) => {
+	DANGEROUS_MODE = !req.body.dangerous.checked;
+	res.redirect('/')
 });
 // handling command
 app.post('/', (req, res) => {
