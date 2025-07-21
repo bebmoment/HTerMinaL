@@ -24,9 +24,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( {extended: false} ));
 
 // initial render
+// app.get('/', (req, res) => {
+// 	res.render('index.ejs', {output: "", DANGEROUS_MODE: DANGEROUS_MODE}) 
+// });
+
 app.get('/', (req, res) => {
-	res.render('index.ejs', {output: "", DANGEROUS_MODE: DANGEROUS_MODE}) 
-});
+	bebRender(req, res, 'index.ejs', "", DANGEROUS_MODE);
+})
 app.get('/hack', (req, res) => {
 	res.render('hack.ejs', {result: ""})
 });
@@ -73,7 +77,6 @@ function bashEcho(what) {
 }
 // starting wrapper functions
 // might have to curry heehoo
-// DOESN'T FUCKING WORK RN 
-function renderHome(res, req, out, danger) {
-	res.render('index.ejs', {output: out, DANGEROUS_MODE: danger})
+function bebRender(req, res, page, out, danger) {
+	res.render(page, {output: out, DANGEROUS_MODE: danger})
 }
