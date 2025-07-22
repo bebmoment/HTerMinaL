@@ -1,5 +1,8 @@
 /* 
 server
+TODO: improve C password checking and maybe move the binary to public 
+remove global state dependence
+docker or tauri or electron
 */
 let DANGEROUS_MODE = false; // silly global state that i'm trying to get rid of
 
