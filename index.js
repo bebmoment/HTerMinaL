@@ -12,6 +12,7 @@ import { exec } from 'child_process';
 import bodyParser from 'body-parser'; 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import favicon from 'serve-favicon';
 
 const app = express();
 const port = 3000;
@@ -20,6 +21,7 @@ app.set('view engine', 'ejs');
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 app.use(express.static(`${__dirname}/public`)); // the one thing that makes css work again
+app.use(favicon(`${__dirname}/public/favicon.ico`));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( {extended: false} ));
 
