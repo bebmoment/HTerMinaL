@@ -1,6 +1,6 @@
 /* 
 server
-TODO: improve C password checking and maybe move the binary to public 
+TODO:
 remove global state dependence
 docker or tauri or electron
 */
@@ -26,15 +26,15 @@ app.use(bodyParser.urlencoded( {extended: false} ));
 app.get('/', (req, res) => {
 	bebRender(req, res, 'index.ejs', "", DANGEROUS_MODE);
 })
-app.get('/hack', (req, res) => {
-	res.render('hack.ejs', {output: ""})
+app.get('/login', (req, res) => {
+	res.render('hack.ejs', {output: ""});
 });
 
-app.post('/hack', (req, res) => {
-	exec(`./hack ${req.body.login}`, (err, stdout, stderr) => {
-		bebRender(req, res, err ? 'hack.ejs' : 'index.ejs', err ? stderr : stdout, !err)
-		DANGEROUS_MODE = true;
-	})
+app.post('/login', (req, res) => {
+	exec(`./public/hack ${req.body.login}`, (err, stdout, stderr) => {
+		bebRender(req, res, err ? 'hack.ejs' : 'index.ejs', err ? stderr : stdout, !err);
+		DANGEROUS_MODE = !err;
+	});
 });
 
 // handling command
@@ -43,13 +43,13 @@ app.post('/', (req, res) => {
 	// const line = (DANGEROUS_MODE) ? req.body.cmd : `echo ${req.body.cmd}`
 	exec((DANGEROUS_MODE) ? req.body.cmd : `echo ${req.body.cmd}`, (err, stdout, stderr) => { // no way this is it
 		bebRender(req, res, 'index.ejs', err ? stderr : stdout, DANGEROUS_MODE);
-	})
+	});
 });
 
 app.put('/', (req, res) => {
 	DANGEROUS_MODE = false;
 	res.redirect('/');
-})
+});
 
 app.listen(port, () => {
 	console.log(`app listening on port ${port}`);
